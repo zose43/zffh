@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+    nginx:
+        container_name: "zffh-nginx"
+        build:
+            context: docker/nginx
+        ports:
+            - "8021:80"
+        volumes:
+            - ./:/app
+        depends_on:
+            -   php-fpm
+
+    php-fpm:
+        container_name: "zffh-php-fpm"
+        build:
+            context: docker/php-fpm
+        volumes:
+            -   ./:/app
+
+    php-cli:
+        container_name: "zffh-php-cli"
+        build:
+            context: docker/php-cli
+        volumes:
+            -   ./:/app
