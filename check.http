@@ -1,0 +1,20 @@
+GET http://localhost/cgi-bin/hello_php
+
+###
+
+POST http://localhost/cgi-bin/hello_php?name=ide
+Content-Type: application/x-www-form-urlencoded
+
+age=3&login=me
+
+###
+
+PATCH http://localhost/cgi-bin/hello_php?name=ide
+Content-Type: application/json
+
+{
+  "age": 12,
+  "login": "ZOSE"
+}
+
+###
