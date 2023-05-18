@@ -7,6 +7,6 @@ RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-WORKDIR app/
+WORKDIR /app
 
 USER app
