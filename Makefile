@@ -26,7 +26,7 @@ test:
 	docker-compose run --rm php-cli composer test
 
 lint:
-	docker-compose run --rm php-cli composer php-cs-fixer fix -- --diff --dry-run
+	docker-compose run --rm php-cli composer php-cs-fixer fix --diff --dry-run
 
 cs-fix:
 	docker-compose run --rm php-cli composer php-cs-fixer fix
