@@ -16,6 +16,10 @@
     "vimeo/psalm": "^5.9"
   },
   "autoload": {
+    "files": [
+      "src/Framework/HTTP/Message/createServerRequestFromGlobals.php",
+      "src/App/detectLang.php"
+    ],
     "psr-4": {
       "App\\": "src/App",
       "Framework\\": "src/Framework"
