@@ -2,13 +2,49 @@
 
 declare(strict_types=1);
 
-// todo test for detectLang
+use Framework\HTTP\Message\Response;
+use Framework\HTTP\Message\ServerRequest;
+
+/** @psalm-suppress MissingFile */
+require __DIR__ . '/../vendor/autoload.php';
+
+### Page
+
+function home(ServerRequest $request): Response
+{
+    $response = new Response(400);
+    $name = ($request->query['name']) ?? 'guest';
+    if (!is_string($name)) {
+        $response->setBody('Name not a string!');
+        return $response;
+    }
+
+    $name = htmlspecialchars($name);
+    $lang = detectLang('en', $request);
+    $response->setBody("<h1>Hello,$name</h1><div>Lang is $lang</div>")
+        ->setStatusCode(200)
+        ->setHeaders([
+            'X-frame-options' => 'deny',
+            'Content-Type' => 'text/html; charset=UTF-8',
+        ]);
+
+    return $response;
+}
+
+### Grabbing
+
 $request = createServerRequestFromGlobals(query: $_GET);
-$name = ((string)$request->query['name']) ?: 'guest';
-$name = htmlspecialchars($name);
-$lang = detectLang('en', $request);
 
-http_response_code(201);
-header('X-frame-options: deny');
+### Running
 
-echo "<h1>Hello,$name</h1><div>Lang is $lang</div>";
+$response = home($request);
+
+### Sending
+
+http_response_code($response->getStatusCode());
+/** @var string $value */
+/** @var string $name */
+foreach ($response->getHeaders() as $name => $value) {
+    header("$name: $value");
+}
+echo $response->getBody();
