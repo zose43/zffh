@@ -8,8 +8,6 @@ use Framework\HTTP\Message\ServerRequest;
 /** @psalm-suppress MissingFile */
 require __DIR__ . '/../vendor/autoload.php';
 
-### Page
-
 function home(ServerRequest $request): Response
 {
     $response = new Response(400);
@@ -31,15 +29,8 @@ function home(ServerRequest $request): Response
     return $response;
 }
 
-### Grabbing
-
 $request = createServerRequestFromGlobals(query: $_GET);
-
-### Running
-
 $response = home($request);
-
-### Sending
 
 http_response_code($response->getStatusCode());
 /** @var string $value */
