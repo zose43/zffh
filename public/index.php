@@ -34,7 +34,6 @@ $response = home($request);
 
 http_response_code($response->getStatusCode());
 /** @var string $value */
-/** @var string $name */
 foreach ($response->getHeaders() as $name => $value) {
     header("$name: $value");
 }
