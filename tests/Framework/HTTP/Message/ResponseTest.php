@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Tests\App\HTTP\Message;
+namespace Framework\HTTP\Message;
 
-use Framework\HTTP\Message\Response;
-use Framework\HTTP\Message\Stream;
 use PHPUnit\Framework\TestCase;
 
 /**
