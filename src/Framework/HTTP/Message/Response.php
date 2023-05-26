@@ -7,9 +7,9 @@ namespace Framework\HTTP\Message;
 final class Response
 {
     public function __construct(
-        private int    $statusCode,
-        private string $body = '',
-        private array  $headers = []
+        private int     $statusCode,
+        private ?Stream $body,
+        private array   $headers = []
     ) {
     }
 
@@ -24,12 +24,12 @@ final class Response
         return $this;
     }
 
-    public function getBody(): string
+    public function getBody(): ?Stream
     {
         return $this->body;
     }
 
-    public function setBody(string $body): Response
+    public function setBody(Stream $body): Response
     {
         $this->body = $body;
         return $this;
