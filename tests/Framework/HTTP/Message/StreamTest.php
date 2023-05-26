@@ -63,4 +63,12 @@ final class StreamTest extends TestCase
         $stream = new Stream($resource);
         assertEquals('Good day', (string)$stream);
     }
+
+    public function testWrite(): void
+    {
+        $resource = fopen('php://memory', 'rb+');
+        $stream = new Stream($resource);
+        $stream->write('Good day');
+        assertEquals('Good day', (string)$stream);
+    }
 }

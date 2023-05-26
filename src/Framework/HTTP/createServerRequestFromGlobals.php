@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use Framework\HTTP\Message\ServerRequest;
 use Framework\HTTP\Message\Stream;
 use Framework\HTTP\Message\Uri;

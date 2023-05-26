@@ -40,4 +40,12 @@ final readonly class Stream
         $this->rewind();
         return $this->getContents();
     }
+
+    public function write(string $data): self
+    {
+        // todo check the write privilege
+        fwrite($this->stream, $data);
+
+        return $this;
+    }
 }

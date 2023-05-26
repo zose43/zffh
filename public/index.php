@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 use Framework\HTTP\Message\Response;
 use Framework\HTTP\Message\ServerRequest;
+use Framework\HTTP\Message\Stream;
+
+use function Framework\HTTP\emitResponseToSApi;
 
 /** @psalm-suppress MissingFile */
 require __DIR__ . '/../vendor/autoload.php';
 
 function home(ServerRequest $request): Response
 {
-    $response = new Response(400);
+    $response = new Response(400, null);
     $name = ($request->query['name']) ?? 'guest';
     if (!is_string($name)) {
-        $response->setBody('Name not a string!');
         return $response;
     }
 
     $name = htmlspecialchars($name);
     $lang = detectLang('en', $request);
-    $response->setBody("<h1>Hello,$name</h1><div>Lang is $lang</div>")
+    $body = (new Stream(fopen('php://memory', 'rb+')))
+        ->write("<h1>Hello,$name</h1><div>Lang is $lang</div>");
+    $response->setBody($body)
         ->setStatusCode(200)
         ->setHeaders([
             'X-frame-options' => 'deny',
-            'Content-Type' => 'text/html; charset=UTF-8',
+            'Content-Type' => 'text/plain; charset=UTF-8',
         ]);
 
     return $response;
@@ -32,10 +36,4 @@ function home(ServerRequest $request): Response
 $request = createServerRequestFromGlobals(query: $_GET);
 $response = home($request);
 
-http_response_code($response->getStatusCode());
-/** @var string $value */
-/** @var string $name */
-foreach ($response->getHeaders() as $name => $value) {
-    header("$name: $value");
-}
-echo $response->getBody();
+emitResponseToSApi($response);
