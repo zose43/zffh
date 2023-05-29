@@ -7,10 +7,11 @@ namespace Framework\HTTP\Message;
 final class Response
 {
     public function __construct(
-        private int     $statusCode,
-        private ?Stream $body,
-        private array   $headers = []
+        public readonly int $statusCode = 200,
+        private ?Stream     $body = null,
+        private array       $headers = []
     ) {
+        $this->body ??= new Stream(fopen('php://memory', 'rb+'));
     }
 
     public function getStatusCode(): int
@@ -18,21 +19,9 @@ final class Response
         return $this->statusCode;
     }
 
-    public function setStatusCode(int $statusCode): Response
-    {
-        $this->statusCode = $statusCode;
-        return $this;
-    }
-
     public function getBody(): ?Stream
     {
         return $this->body;
-    }
-
-    public function setBody(Stream $body): Response
-    {
-        $this->body = $body;
-        return $this;
     }
 
     public function getHeaders(): array
@@ -40,9 +29,15 @@ final class Response
         return $this->headers;
     }
 
-    public function setHeaders(array $headers): Response
+    public function addHeader(string $header, string $value): self
     {
-        $this->headers = $headers;
-        return $this;
+        $clone = clone $this;
+        $clone->headers[$header] = $value;
+        return $clone;
+    }
+
+    public function getHeader(string $header): string
+    {
+        return $this->headers[$header] ?? '';
     }
 }
