@@ -9,9 +9,12 @@ use Framework\HTTP\Message\Response;
 function emitResponseToSApi(Response $response): void
 {
     http_response_code($response->getStatusCode());
-    /** @var string $value */
-    foreach ($response->getHeaders() as $name => $value) {
-        header("$name: $value");
+    /** @var array $values */
+    foreach ($response->getHeaders() as $name => $values) {
+        /** @var string $value */
+        foreach ($values as $value) {
+            header("$name: $value", false);
+        }
     }
 
     $body = $response->getBody();

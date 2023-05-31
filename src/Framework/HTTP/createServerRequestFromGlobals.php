@@ -11,7 +11,7 @@ use Framework\HTTP\Message\Uri;
  * @param array<string,array|string>|null $query
  * @param array<string,array|string>|null $parsedBody
  * @param array<string,string>|null $cookie
- * @param resource|null $body
+ * @param resource $body
  */
 function createServerRequestFromGlobals(
     ?array $server = null,
@@ -21,15 +21,15 @@ function createServerRequestFromGlobals(
     mixed  $body = null,
 ): ServerRequest {
     $server ??= $_SERVER;
-    $headers = [
-        'Content-Type' => $server['CONTENT_TYPE'],
-        'Content-Length' => $server['CONTENT_LENGTH'],
-    ];
+    $headers = [];
     foreach ($server as $name => $item) {
         if (str_starts_with($name, 'HTTP_')) {
-            $name = ucwords(strtolower(str_replace('_', '-', substr($name, 5))), '-');
-            $headers[$name] = $item;
+            $name = substr($name, 5);
         }
+        $name = ucwords(strtolower(str_replace('_', '-', $name)), '-');
+        /** @psalm-suppress RedundantCastGivenDocblockType */
+        $values = preg_split('#\s*,\s*#', (string)$item);
+        $headers[$name] = $values;
     }
 
     return new ServerRequest(

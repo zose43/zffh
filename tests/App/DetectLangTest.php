@@ -50,4 +50,10 @@ final class DetectLangTest extends TestCase
         $request = createServerRequestFromGlobals(['REQUEST_METHOD' => 'POST', 'HTTP_ACCEPT-LANGUAGE' => 'fr']);
         assertEquals('fr', detectLang('ru', $request));
     }
+
+    public function testMultipleHeader(): void
+    {
+        $request = createServerRequestFromGlobals(['REQUEST_METHOD' => 'POST', 'HTTP_ACCEPT-LANGUAGE' => 'fr, en, ru']);
+        assertEquals('fr, en, ru', $request->getHeaderLine('Accept-Language'));
+    }
 }
