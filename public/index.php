@@ -30,10 +30,17 @@ function home(ServerRequest $request): Response
 $request = createServerRequestFromGlobals(query: $_GET);
 
 ### Preprocessing
+// todo no test
+if ($request->method !== 'POST'
+    && str_starts_with($request->getHeaderLine('Content-Type'), 'application/x-www-form-urlencoded')) {
+    parse_str((string)$request->body, $data);
+    $request = $request->setParsedBody($data);
+}
 
 ### Running
 
 $response = home($request);
+
 
 ### Postprocessing
 $response = $response->addHeader('X-frame-options', 'DENY');

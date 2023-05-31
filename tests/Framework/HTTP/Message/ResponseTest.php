@@ -20,8 +20,8 @@ final class ResponseTest extends TestCase
     public function testGetHeaders(): void
     {
         $headers = [
-            'Accept-Language' => 'ru',
-            'Request-Method' => 'POST',
+            'Accept-Language' => ['ru'],
+            'Request-Method' => ['POST'],
         ];
         $response = new Response(201, null, $headers);
         self::assertEquals($headers, $response->getHeaders());
@@ -41,8 +41,8 @@ final class ResponseTest extends TestCase
         $response = $response->addHeader('Content-Type', 'text/plain; charset=UTF-8')
             ->addHeader('X-frame-options', 'deny');
         self::assertEquals([
-            'Content-Type' => 'text/plain; charset=UTF-8',
-            'X-frame-options' => 'deny',
+            'Content-Type' => ['text/plain; charset=UTF-8'],
+            'X-frame-options' => ['deny'],
         ], $response->getHeaders());
     }
 
@@ -50,12 +50,29 @@ final class ResponseTest extends TestCase
     {
         $response = new Response(200, null);
         $response = $response->addHeader('Content-Type', 'text/plain; charset=UTF-8');
-        self::assertEquals('text/plain; charset=UTF-8', $response->getHeader('Content-Type'));
+        self::assertEquals(['text/plain; charset=UTF-8'], $response->getHeader('Content-Type'));
     }
 
     public function testGetEmptyHeader(): void
     {
         $response = new Response(200, null);
-        self::assertEquals('', $response->getHeader('Content-Type'));
+        self::assertEquals([], $response->getHeader('Content-Type'));
+    }
+
+    public function testMultipleHeader(): void
+    {
+        $response = new Response();
+        $response = $response->addHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->addHeader('Accept-Language', 'en')
+            ->withAddedHeader('Content-Type', 'application/json')
+            ->addHeader('Accept-Language', 'fr');
+
+        self::assertEquals([
+            'Content-Type' => [
+                'text/plain; charset=UTF-8',
+                'application/json',
+            ],
+            'Accept-Language' => ['fr'],
+        ], $response->getHeaders());
     }
 }

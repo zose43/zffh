@@ -18,7 +18,7 @@ final class createServerRequestFromGlobalsTest extends TestCase
             'HTTPS' => 'on',
             'REQUEST_URI' => '/docs?page=7#chapter=2',
             'REQUEST_METHOD' => 'POST',
-            'CONTENT_TYPE' => 'text/plain',
+            'CONTENT_TYPE' => 'text/plain, application/json',
             'CONTENT_LENGTH' => '10',
             'HTTP_ACCEPT_LANGUAGE' => 'en',
         ];
@@ -37,13 +37,16 @@ final class createServerRequestFromGlobalsTest extends TestCase
         );
 
         self::assertEquals([
-            'Content-Type' => 'text/plain',
-            'Content-Length' => '10',
-            'Host' => 'localhost',
-            'Accept-Language' => 'en',
+            'Host' => ['localhost'],
+            'Https' => ['on'],
+            'Request-Uri' => ['/docs?page=7#chapter=2'],
+            'Request-Method' => ['POST'],
+            'Content-Type' => ['text/plain', 'application/json'],
+            'Content-Length' => ['10'],
+            'Accept-Language' => ['en'],
         ], $request->headers);
         self::assertEquals($query, $request->query);
-        self::assertEquals($parsedBody, $request->parsedBody);
+        self::assertEquals($parsedBody, $request->getParsedBody());
         self::assertEquals($cookie, $request->cookie);
         self::assertEquals('Body', (string)$request->body);
         self::assertEquals(
@@ -51,5 +54,20 @@ final class createServerRequestFromGlobalsTest extends TestCase
             (string)$request->getUri()
         );
         self::assertEquals($server['REQUEST_METHOD'], $request->getMethod());
+    }
+
+    public function testMultipleHeaders(): void
+    {
+        $headers = [
+            'HTTP_HOST' => 'localhost',
+            'REQUEST_METHOD' => 'POST',
+            'CONTENT_TYPE' => 'text/plain, application/json',
+            'HTTP_ACCEPT_LANGUAGE' => 'en',
+        ];
+
+        $request = createServerRequestFromGlobals($headers);
+        self::assertEquals('text/plain, application/json', $request->getHeaderLine('Content-Type'));
+        self::assertFalse($request->hasHeader('Content-Length'));
+        self::assertTrue($request->hasHeader('Host'));
     }
 }

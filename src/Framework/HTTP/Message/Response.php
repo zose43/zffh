@@ -6,6 +6,9 @@ namespace Framework\HTTP\Message;
 
 final class Response
 {
+    /**
+     * @psalm-param array<string,string[]> $headers
+     */
     public function __construct(
         public readonly int $statusCode = 200,
         private ?Stream     $body = null,
@@ -32,12 +35,19 @@ final class Response
     public function addHeader(string $header, string $value): self
     {
         $clone = clone $this;
-        $clone->headers[$header] = $value;
+        $clone->headers[$header] = [$value];
         return $clone;
     }
 
-    public function getHeader(string $header): string
+    public function getHeader(string $header): array
     {
-        return $this->headers[$header] ?? '';
+        return $this->headers[$header] ?? [];
+    }
+
+    public function withAddedHeader(string $header, string $value): self
+    {
+        $clone = clone $this;
+        $clone->headers[$header][] = $value;
+        return $clone;
     }
 }
