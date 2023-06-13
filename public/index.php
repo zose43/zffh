@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Framework\HTTP\Message\Response;
 use Framework\HTTP\Message\ServerRequest;
 
+use function DetectLang\detectLang;
 use function Framework\HTTP\emitResponseToSApi;
 
 /** @psalm-suppress MissingFile */
@@ -12,11 +13,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 function home(ServerRequest $request): Response
 {
-    $name = ($request->query['name']) ?? 'guest';
-    if (!is_string($name)) {
-        return new Response(400, null);
-    }
-
+    $name = $request->getQuery('name') ?: 'guest';
     $name = htmlspecialchars($name);
     $lang = detectLang('en', $request);
 
