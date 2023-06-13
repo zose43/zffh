@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\LangServiceRequestAdapter;
 use Framework\HTTP\Message\Response;
 use Framework\HTTP\Message\ServerRequest;
 
@@ -15,7 +16,7 @@ function home(ServerRequest $request): Response
 {
     $name = $request->getQuery('name') ?: 'guest';
     $name = htmlspecialchars($name);
-    $lang = detectLang('en', $request);
+    $lang = detectLang('en', new LangServiceRequestAdapter($request));
 
     $response = (new Response())
         ->addHeader('Content-Type', 'text/html; charset=UTF-8');
@@ -24,7 +25,8 @@ function home(ServerRequest $request): Response
     return $response;
 }
 
-$request = createServerRequestFromGlobals(query: $_GET);
+### Grabbing
+$request = createServerRequestFromGlobals();
 
 ### Preprocessing
 // todo no test
