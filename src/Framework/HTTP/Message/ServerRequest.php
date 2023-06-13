@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Framework\HTTP\Message;
 
-final class ServerRequest implements Request
+use DetectLang\LangRequestContract;
+
+// todo make test
+final class ServerRequest implements LangRequestContract
 {
     /**
      * @psalm-param  array<string,string[]> $headers
@@ -57,5 +60,25 @@ final class ServerRequest implements Request
         $clone = clone $this;
         $clone->parsedBody = $body;
         return $clone;
+    }
+
+    public function getQuery(string $value): string
+    {
+        return empty($this->query[$value]) ? '' : (string)$this->query[$value];
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    public function getHeader(string $header): array
+    {
+        return $this->headers[$header] ?? [];
+    }
+
+    public function getCookie(string $value): string
+    {
+        return empty($this->cookie[$value]) ? '' : (string)$this->cookie[$value];
     }
 }
