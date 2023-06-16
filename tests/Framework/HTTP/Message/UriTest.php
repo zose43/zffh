@@ -15,12 +15,12 @@ final class UriTest extends TestCase
     {
         $uri = new Uri('https://admin:1199552112@rdp:2022/docs?page=7#chapter=2');
 
-        self::assertEquals('https', $uri->scheme);
-        self::assertEquals('rdp', $uri->host);
-        self::assertEquals(2022, $uri->port);
+        self::assertEquals('https', $uri->getScheme());
+        self::assertEquals('rdp', $uri->getHost());
+        self::assertEquals(2022, $uri->getPort());
         self::assertEquals('admin:1199552112', $uri->getAuth());
-        self::assertEquals('/docs', $uri->path);
-        self::assertEquals('page=7', $uri->query);
-        self::assertEquals('chapter=2', $uri->fragment);
+        self::assertEquals('/docs', $uri->getPath());
+        self::assertEquals('page=7', $uri->getQuery());
+        self::assertEquals('chapter=2', $uri->getFragment());
     }
 }

@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+use App\LangServiceRequestAdapter;
 use Framework\HTTP\Message\Response;
 use Framework\HTTP\Message\ServerRequest;
+
+use General\HTTP\Message\ResponseInterface;
 
 use function DetectLang\detectLang;
 use function Framework\HTTP\emitResponseToSApi;
@@ -11,11 +14,11 @@ use function Framework\HTTP\emitResponseToSApi;
 /** @psalm-suppress MissingFile */
 require __DIR__ . '/../vendor/autoload.php';
 
-function home(ServerRequest $request): Response
+function home(ServerRequest $request): ResponseInterface
 {
     $name = $request->getQuery('name') ?: 'guest';
     $name = htmlspecialchars($name);
-    $lang = detectLang('en', $request);
+    $lang = detectLang('en', new LangServiceRequestAdapter($request));
 
     $response = (new Response())
         ->addHeader('Content-Type', 'text/html; charset=UTF-8');
@@ -24,7 +27,8 @@ function home(ServerRequest $request): Response
     return $response;
 }
 
-$request = createServerRequestFromGlobals(query: $_GET);
+### Grabbing
+$request = createServerRequestFromGlobals();
 
 ### Preprocessing
 // todo no test

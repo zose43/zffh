@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Framework\HTTP;
 
-use Framework\HTTP\Message\Response;
+use General\HTTP\Message\ResponseInterface;
 
-function emitResponseToSApi(Response $response): void
+function emitResponseToSApi(ResponseInterface $response): void
 {
     http_response_code($response->getStatusCode());
     /** @var array $values */
