@@ -6,13 +6,15 @@ use App\LangServiceRequestAdapter;
 use Framework\HTTP\Message\Response;
 use Framework\HTTP\Message\ServerRequest;
 
+use General\HTTP\Message\ResponseInterface;
+
 use function DetectLang\detectLang;
 use function Framework\HTTP\emitResponseToSApi;
 
 /** @psalm-suppress MissingFile */
 require __DIR__ . '/../vendor/autoload.php';
 
-function home(ServerRequest $request): Response
+function home(ServerRequest $request): ResponseInterface
 {
     $name = $request->getQuery('name') ?: 'guest';
     $name = htmlspecialchars($name);

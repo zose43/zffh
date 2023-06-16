@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Framework\HTTP\Message;
 
-final class Response
+use General\HTTP\Message\ResponseInterface;
+
+final class Response implements ResponseInterface
 {
     /**
      * @psalm-param array<string,string[]> $headers
