@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace General\HTTP\Message;
 
-use Framework\HTTP\Message\ServerRequest;
-
 interface ServerRequestInterface
 {
     public function getParsedBody(): ?array;
 
-    public function setParsedBody(?array $parsedBody): ServerRequest;
+    public function setParsedBody(?array $parsedBody): self;
 
     public function getMethod(): string;
 
