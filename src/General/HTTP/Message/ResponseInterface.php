@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace General\HTTP\Message;
 
-use Framework\HTTP\Message\Stream;
-
 interface ResponseInterface
 {
     public function getStatusCode(): int;
 
-    public function getBody(): ?Stream; // todo chg to interface
+    public function getBody(): ?StreamInterface;
 
     public function getHeaders(): array;
 
