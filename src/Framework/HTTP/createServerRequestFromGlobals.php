@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Framework\HTTP\Message\ServerRequest;
 use Framework\HTTP\Message\Stream;
 use Framework\HTTP\Message\Uri;
+use General\HTTP\Message\ServerRequestInterface;
 
 /**
  * @param array<string,string>|null $server
@@ -12,6 +13,7 @@ use Framework\HTTP\Message\Uri;
  * @param array<string,array|string>|null $parsedBody
  * @param array<string,string>|null $cookie
  * @param resource $body
+ * @psalm-return ServerRequest
  */
 function createServerRequestFromGlobals(
     ?array $server = null,
@@ -19,7 +21,7 @@ function createServerRequestFromGlobals(
     ?array $parsedBody = null,
     ?array $cookie = null,
     mixed  $body = null,
-): ServerRequest {
+): ServerRequestInterface {
     $server ??= $_SERVER;
     $headers = [];
     foreach ($server as $name => $item) {

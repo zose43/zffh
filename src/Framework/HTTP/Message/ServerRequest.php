@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace Framework\HTTP\Message;
 
-use DetectLang\LangRequestContract;
+use General\HTTP\Message\ServerRequestInterface;
+use General\HTTP\Message\UriInterface;
 
 // todo make test
-final class ServerRequest implements LangRequestContract
+final class ServerRequest implements ServerRequestInterface
 {
     /**
      * @psalm-param  array<string,string[]> $headers
+     * @psalm-param Uri $uri
      */
     public function __construct(
-        public readonly array  $query,
-        public readonly Uri    $uri,
-        public readonly string $method,
-        private ?array         $parsedBody,
-        public readonly array  $headers,
-        public readonly array  $cookie,
-        public readonly array  $server,
-        public readonly Stream $body
+        public readonly array        $query,
+        public readonly UriInterface $uri,
+        public readonly string       $method,
+        private ?array               $parsedBody,
+        public readonly array        $headers,
+        public readonly array        $cookie,
+        public readonly array        $server,
+        public readonly Stream       $body
     ) {
     }
 
@@ -40,7 +42,7 @@ final class ServerRequest implements LangRequestContract
         return $this->method;
     }
 
-    public function getUri(): Uri
+    public function getUri(): UriInterface
     {
         return $this->uri;
     }

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Framework\HTTP\Message;
 
-final readonly class Uri
+use General\HTTP\Message\UriInterface;
+
+final readonly class Uri implements UriInterface
 {
     public string $scheme;
     public string $host;
@@ -26,6 +28,46 @@ final readonly class Uri
         $this->path = $uriData['path'] ?? '';
         $this->query = $uriData['query'] ?? '';
         $this->fragment = $uriData['fragment'] ?? '';
+    }
+
+    public function getHost(): string
+    {
+        return $this->host;
+    }
+
+    public function getPort(): ?int
+    {
+        return $this->port;
+    }
+
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    public function getPass(): string
+    {
+        return $this->pass;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function getQuery(): string
+    {
+        return $this->query;
+    }
+
+    public function getFragment(): string
+    {
+        return $this->fragment;
+    }
+
+    public function getScheme(): string
+    {
+        return $this->scheme;
     }
 
     public function getAuth(): string

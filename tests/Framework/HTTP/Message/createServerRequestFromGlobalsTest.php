@@ -14,9 +14,6 @@ final class createServerRequestFromGlobalsTest extends TestCase
     public function testGlobals(): void
     {
         $server = [
-            'HTTP_HOST' => 'localhost',
-            'HTTPS' => 'on',
-            'REQUEST_URI' => '/docs?page=7#chapter=2',
             'REQUEST_METHOD' => 'POST',
             'CONTENT_TYPE' => 'text/plain, application/json',
             'CONTENT_LENGTH' => '10',
@@ -37,9 +34,6 @@ final class createServerRequestFromGlobalsTest extends TestCase
         );
 
         self::assertEquals([
-            'Host' => ['localhost'],
-            'Https' => ['on'],
-            'Request-Uri' => ['/docs?page=7#chapter=2'],
             'Request-Method' => ['POST'],
             'Content-Type' => ['text/plain', 'application/json'],
             'Content-Length' => ['10'],
@@ -49,11 +43,27 @@ final class createServerRequestFromGlobalsTest extends TestCase
         self::assertEquals($parsedBody, $request->getParsedBody());
         self::assertEquals($cookie, $request->cookie);
         self::assertEquals('Body', (string)$request->body);
+        self::assertEquals($server['REQUEST_METHOD'], $request->getMethod());
+    }
+
+    public function testUri(): void
+    {
+        $server = [
+            'REQUEST_METHOD' => 'POST',
+            'HTTPS' => 'on',
+            'HTTP_HOST' => 'localhost',
+            'REQUEST_URI' => '/docs?page=7#chapter=2',
+        ];
+        $request = createServerRequestFromGlobals(
+            $server,
+        );
+        /** @var Uri $uri */
+        $uri = $request->getUri();
+
         self::assertEquals(
             'https://' . $server['HTTP_HOST'] . $server['REQUEST_URI'],
-            (string)$request->getUri()
+            (string)$uri
         );
-        self::assertEquals($server['REQUEST_METHOD'], $request->getMethod());
     }
 
     public function testMultipleHeaders(): void

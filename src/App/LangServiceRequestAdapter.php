@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App;
 
 use DetectLang\LangRequestContract;
-use Framework\HTTP\Message\ServerRequest;
+use General\HTTP\Message\ServerRequestInterface;
 
 final readonly class LangServiceRequestAdapter implements LangRequestContract
 {
-    public function __construct(private ServerRequest $origin)
+    public function __construct(private ServerRequestInterface $origin)
     {
     }
 
