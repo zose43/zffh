@@ -8,11 +8,11 @@ interface StreamInterface
 {
     public function getContents(): string;
 
-    public function rewind(): self;
+    public function rewind(): StreamInterface;
 
-    public function seek(int $offset): self;
+    public function seek(int $offset): StreamInterface;
 
     public function read(int $length): string;
 
-    public function write(string $data): self;
+    public function write(string $data): StreamInterface;
 }

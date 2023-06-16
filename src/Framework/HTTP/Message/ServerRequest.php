@@ -59,7 +59,7 @@ final class ServerRequest implements ServerRequestInterface
         return array_key_exists($header, $this->headers);
     }
 
-    public function addParsedBody(?array $body): self
+    public function addParsedBody(?array $body): ServerRequestInterface
     {
         $clone = clone $this;
         $clone->parsedBody = $body;

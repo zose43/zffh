@@ -36,7 +36,7 @@ final class Response implements ResponseInterface
         return $this->headers;
     }
 
-    public function addHeader(string $header, string $value): self
+    public function addHeader(string $header, string $value): ResponseInterface
     {
         $clone = clone $this;
         $clone->headers[$header] = [$value];
@@ -48,7 +48,7 @@ final class Response implements ResponseInterface
         return $this->headers[$header] ?? [];
     }
 
-    public function withAddedHeader(string $header, string $value): self
+    public function withAddedHeader(string $header, string $value): ResponseInterface
     {
         $clone = clone $this;
         $clone->headers[$header][] = $value;

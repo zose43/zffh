@@ -8,7 +8,7 @@ interface ServerRequestInterface
 {
     public function getParsedBody(): ?array;
 
-    public function setParsedBody(?array $parsedBody): self;
+    public function setParsedBody(?array $parsedBody): ServerRequestInterface;
 
     public function getMethod(): string;
 
@@ -18,7 +18,7 @@ interface ServerRequestInterface
 
     public function hasHeader(string $header): bool;
 
-    public function addParsedBody(?array $body): self;
+    public function addParsedBody(?array $body): ServerRequestInterface;
 
     public function getQuery(string $value): string;
 

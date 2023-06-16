@@ -20,13 +20,13 @@ final readonly class Stream implements StreamInterface
         return stream_get_contents($this->stream) ?: '';
     }
 
-    public function rewind(): self
+    public function rewind(): StreamInterface
     {
         $this->seek(0);
         return $this;
     }
 
-    public function seek(int $offset): self
+    public function seek(int $offset): StreamInterface
     {
         fseek($this->stream, $offset);
         return $this;
@@ -43,7 +43,7 @@ final readonly class Stream implements StreamInterface
         return $this->getContents();
     }
 
-    public function write(string $data): self
+    public function write(string $data): StreamInterface
     {
         fwrite($this->stream, $data);
         return $this;

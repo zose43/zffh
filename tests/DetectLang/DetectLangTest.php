@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DetectLang;
 
+use General\HTTP\Message\ServerRequestInterface;
+
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
@@ -14,12 +16,12 @@ use function PHPUnit\Framework\assertEquals;
  */
 final class DetectLangTest extends TestCase
 {
-    private LangRequestContract $langRequest;
+    private ServerRequestInterface $langRequest;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->langRequest = $this->createMock(LangRequestContract::class);
+        $this->langRequest = $this->createMock(ServerRequestInterface::class);
     }
 
     public function testDefault(): void
