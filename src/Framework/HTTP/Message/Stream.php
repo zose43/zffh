@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Framework\HTTP\Message;
 
-final readonly class Stream
+use General\HTTP\Message\StreamInterface;
+
+final readonly class Stream implements StreamInterface
 {
     /**
      * @param resource $stream
@@ -43,9 +45,7 @@ final readonly class Stream
 
     public function write(string $data): self
     {
-        // todo check the write privilege
         fwrite($this->stream, $data);
-
         return $this;
     }
 }

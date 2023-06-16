@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Framework\HTTP\Message;
 
 use General\HTTP\Message\ResponseInterface;
+use General\HTTP\Message\StreamInterface;
 
 final class Response implements ResponseInterface
 {
     /**
      * @psalm-param array<string,string[]> $headers
+     * @psalm-param Stream|null $body
      */
     public function __construct(
-        public readonly int $statusCode = 200,
-        private ?Stream     $body = null,
-        private array       $headers = []
+        public readonly int      $statusCode = 200,
+        private ?StreamInterface $body = null,
+        private array            $headers = []
     ) {
         $this->body ??= new Stream(fopen('php://memory', 'rb+'));
     }
@@ -24,7 +26,7 @@ final class Response implements ResponseInterface
         return $this->statusCode;
     }
 
-    public function getBody(): ?Stream
+    public function getBody(): ?StreamInterface
     {
         return $this->body;
     }
